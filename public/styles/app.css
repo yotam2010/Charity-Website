@@ -1,5 +1,22 @@
 
 
+@import "bootstrap";
+
+.card-columns {
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 3;
+  }
+  @include media-breakpoint-only(sm) {
+    column-count: 2;
+  }
+}
+
 /* GLOBAL
 ======================================================================================= */
 
@@ -81,7 +98,6 @@ a:focus {
 margin-top:2rem;
 }
 
-
 /* MAIN PAGE
 ======================================================================================= */
 
@@ -161,7 +177,7 @@ margin-top:2rem;
 .contact_body{
   display: flex;
   flex-wrap:wrap;
-
+  
 }
 
 .branch{
@@ -200,6 +216,7 @@ margin-top:2rem;
   font-size: 16px;
 }
 
+
 /* RESPONSIVE CSS
 -------------------------------------------------- */
 
@@ -228,12 +245,7 @@ margin-top:2rem;
   .about_section > section:nth-child(n+2):nth-child(-n+3){
   background-color:#f1f1f1; 
 }
-
-.contact_body{
-  margin-right: 5rem;
-  margin-left: 5rem;
-}
-
+  
 }
 
 @media (min-width: 62em) {
@@ -241,3 +253,4 @@ margin-top:2rem;
     margin-top: 7rem;
   }
 }
+
