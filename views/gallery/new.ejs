@@ -1,0 +1,15 @@
+<% include ../partials/header %>
+<main class="form_body">
+    <form action="/gallery" method="POST">
+      <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">New Picture</h1>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Image source" name="url">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Event" name="event">
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</main>
+<% include ../partials/footer %>

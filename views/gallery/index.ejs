@@ -1,0 +1,53 @@
+<% include ../partials/header %>
+
+<div class="extra_space">
+    
+    <% if(admin) {%>
+        <a href="/gallery/new" class="btn btn-success admin_button">Add Picture</a>
+    <% } %>
+    <% if(admin) {%>
+        <button class="btn btn-danger admin_button" id="gallery_delete">DELETE MODE</button>
+    <% } %>
+    
+    <% events.forEach(event => { %>
+    <div class="image_container">
+          <h2 class="center"><%= event[0].event %></h2>
+        <div class="card-columns">
+            <% event.forEach((pic) => { %>
+                <div class="card gallery">
+                    <img class="card-img-top" src="<%= pic.url %>" alt="Card image cap">
+                    <% if(admin) {%>
+                      <!--<form action="/gallery/<%= pic._id %>?_method=DELETE" method="POST">-->
+                        <button type="submit" class="btn btn-danger d-none form_delete_btn" data-deleteId="https://charity-yotam2013.c9users.io/gallery/delete/<%= pic._id %>">X</button>
+                    <!--</form>-->
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+    <% }) %>
+    
+</div>
+<% include ../partials/footer %>
+
+<script>
+    var delete_button=$("#gallery_delete");
+    var form_delete_btn=$(".form_delete_btn");
+    delete_button.click(function(){
+        form_delete_btn.toggleClass("d-none");
+    });
+    
+    form_delete_btn.on("click",function(){
+        $.ajax({url:$(this).attr("data-deleteId"),
+        method:"POST"}).done(function() {
+        
+        });
+        console.log($(this).closest('.card-columns'));
+        console.log($(this).closest('.card-columns').children());
+        console.log("length: "+$(this).closest('.card-columns').children().length);
+        if($(this).closest('.card-columns').children().length>1)
+            $(this).closest('.card').remove();
+        else
+            $(this).closest('.image_container').remove();
+    });
+</script>

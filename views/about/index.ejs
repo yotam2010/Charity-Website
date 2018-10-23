@@ -1,0 +1,48 @@
+<% include ../partials/header %>
+
+<main>
+
+    <div class="banner">
+    <img src="https://images.unsplash.com/photo-1525332193053-dee9e7348624?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a171c64a1cb121a923c4e95d8308ca9e&auto=format&fit=crop&w=1350&q=80">
+        <div class="banner-content">
+            <h1>Get to know us.</h1>
+            <h2>We are awesome.</h2>
+        </div>
+    </div>
+    <% if(admin) {%>
+        <a href="/about-us/new" class="btn btn-success admin_button">Add About</a>
+    <% } %>
+    <% if(admin) {%>
+        <button class="btn btn-danger admin_button" id="about_delete">DELETE MODE</button>
+    <% } %>
+    <div class="about_section container">
+        <% about.forEach(data => { %>
+        <section class="col-md-6 col-xs-12 about">
+                <h2><%= data.title %></h2>
+                <p><%= data.content %></p>
+                <% if(admin) {%>
+                    <button type="submit" class="btn btn-danger d-none form_delete_btn" data-deleteId="https://charity-yotam2013.c9users.io/about-us/delete/<%= data._id %>">Delete</button>
+                <% } %>
+        </section>
+        <% }) %>
+    </div>
+    
+</main>
+
+<% include ../partials/footer %>
+
+<script>
+    var delete_button=$("#about_delete");
+    var form_delete_btn=$(".form_delete_btn");
+    delete_button.click(function(){
+        form_delete_btn.toggleClass("d-none");
+    });
+    
+    form_delete_btn.on("click",function(){
+        $.ajax({url:$(this).attr("data-deleteId"),
+        method:"POST"}).done(function() {
+        
+         });
+        $(this).closest('section').remove();
+    });
+</script>

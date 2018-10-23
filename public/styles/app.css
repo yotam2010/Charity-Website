@@ -1,22 +1,4 @@
 
-
-@import "bootstrap";
-
-.card-columns {
-  @include media-breakpoint-only(xl) {
-    column-count: 5;
-  }
-  @include media-breakpoint-only(lg) {
-    column-count: 4;
-  }
-  @include media-breakpoint-only(md) {
-    column-count: 3;
-  }
-  @include media-breakpoint-only(sm) {
-    column-count: 2;
-  }
-}
-
 /* GLOBAL
 ======================================================================================= */
 
@@ -27,8 +9,9 @@ html{
   width:100%;
 }
 body {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+
+padding-top: 3rem;
+  /*padding-bottom: 3rem;*/
   color: #5a5a5a;
     font-family: 'Roboto', sans-serif!important;
     width: 100%;
@@ -46,6 +29,16 @@ main{
 a:focus {
   box-shadow: none !important;
   outline: none !important; 
+}
+
+.card button{
+  display: block;
+  margin:4px auto;
+}
+
+.card a{
+    display: block;
+  margin:4px auto;
 }
 
 
@@ -75,6 +68,36 @@ a:focus {
 /* NAV BAR END*/
 
 
+.alert_container{
+  display: block;
+  position: fixed;
+  opacity: 0.8;
+  z-index: 1;
+ animation: alert_opacity 10s ease-in-out 0s forwards;
+}
+
+@keyframes alert_opacity {
+    0%   {left:-100vw;}
+    5% {left:1rem;}
+    95% {left:1rem;}
+    100%{left:-100vw}
+}
+
+.alert{
+  text-align: center;
+}
+
+.admin_button{
+  display: block;
+  position: relative;
+  left:10%;
+  margin:4px;
+}
+
+.form_delete_btn{
+  margin:1rem;
+}
+
 /* Set the paragraphs to be left to right in center of the screen and take 75% width + fix font-family and size */
 .readable_pre{
   max-width: 75%;
@@ -98,11 +121,38 @@ a:focus {
 margin-top:2rem;
 }
 
+.body_color{
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#febbbb+0,5eff63+0,5adbf4+99 */
+background: #febbbb; /* Old browsers */
+background: -moz-linear-gradient(-45deg, #febbbb 0%, #5eff63 0%, #5adbf4 99%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg, #febbbb 0%,#5eff63 0%,#5adbf4 99%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg, #febbbb 0%,#5eff63 0%,#5adbf4 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#febbbb', endColorstr='#5adbf4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.form_body{
+  display: flex;
+  margin-bottom: 3rem;
+  justify-content:center;
+  align-items:center;
+}
+
+.form_body form{
+  display: flex;
+  flex-direction:column;
+  min-width: 50%;
+  justify-content:center;
+}
+
 /* MAIN PAGE
 ======================================================================================= */
 
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
+.marketing{
+  padding-bottom: 2rem;
+}
+
 
 /* Carousel base class */
 .carousel {
@@ -133,7 +183,17 @@ margin-top:2rem;
 /* STORIES PAGE
 ======================================================================================= */
 
+.story_card{
+  background-color: #ffffff66!important;
+}
 
+.story_content{
+    overflow: hidden;
+    text-overflow: ellipsis;
+      display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
 
 
 
@@ -188,6 +248,24 @@ margin-top:2rem;
   }
   
   
+  /* GALLERY PAGE
+======================================================================================= */
+
+.card.gallery {
+  background-color: transparent;
+}
+
+.image_container > h2{
+	
+text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+             0px 8px 13px rgba(0,0,0,0.1),
+             0px 18px 23px rgba(0,0,0,0.1);
+  font-family: 'Merienda One', cursive;
+  padding:8px;
+  letter-spacing: 2px;
+  font-size: 40px;
+}
+
   /* ABOUT US PAGE
 ======================================================================================= */
 
@@ -200,9 +278,12 @@ margin-top:2rem;
   display: flex;
   flex-wrap:wrap;
   padding: 0px!important;
+  margin-bottom: 2rem;
 }
 
-
+.about_section > section{
+    background-color:#fff; 
+}
 
 .about_section > section:nth-child(even){
   background-color:#f1f1f1; 
@@ -213,12 +294,85 @@ margin-top:2rem;
   font-size: 2rem;
 }
 .about_section > section p {
+  display:inline-block;
   font-size: 16px;
+}
+
+  /* DONATIONS PAGE
+======================================================================================= */
+
+.donations_card{
+ min-height:60vh;
+ background-color: #ffffff5c!important;
+}
+
+.donations_title{
+  text-transform:uppercase;
+  font-family: 'Merriweather', serif!important;
+}
+
+.donations_title > h1{
+    font-weight:900;
+}
+
+.donation_amount{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  max-width:350px;
+  justify-content: space-between!important;
+  margin:16px auto 16px auto;
+}
+
+.btn_amount{
+  min-width:100px;
+}
+
+.btn_picked{
+  background-color:#4bdef5!important;
+}
+
+.donation_amount  input{
+  margin:auto 8px auto 8px;
+  display:block;
+  max-width:300px;
+  align-self:center;
+}
+
+
+/* LOG IN PAGE
+======================================================================================= */
+
+.login_body{
+  height:80vh;
+  display: flex;
+  align-items:center;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
 }
 
 
 /* RESPONSIVE CSS
 -------------------------------------------------- */
+
 
 @media (min-width: 40em) {
 /* Bump up size of carousel content */
@@ -240,7 +394,7 @@ margin-top:2rem;
 }
   
 .about_section > section:nth-child(even){
-  background-color:white; 
+  background-color:#fff; 
 }
   .about_section > section:nth-child(n+2):nth-child(-n+3){
   background-color:#f1f1f1; 
@@ -253,4 +407,39 @@ margin-top:2rem;
     margin-top: 7rem;
   }
 }
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .card-columns {
+    column-count: 1!important
+  }
+} 
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .card-columns {
+    column-count: 1!important
+  }
+} 
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .card-columns {
+    column-count: 2!important
+}
+} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .card-columns {
+    column-count: 3!important
+  }
+}
+
 

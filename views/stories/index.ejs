@@ -1,0 +1,61 @@
+<% include ../partials/header %>
+
+<div class="container extra_space">
+  <% if(admin) {%>
+    <a href="/stories/new" class="btn btn-success admin_button">Add Story</a>
+  <% } %>
+    
+    
+    <div class="card-columns">
+      <% stories.forEach((story,i)=>{ %>
+      <div class="card story_card">
+        <% if(story.picture) {%>
+        <img class="card-img-top" src=<%= story.picture %> alt="Card image cap">
+        <% } %>
+        <div class="card-body">
+          <h5 class="card-title"><%= story.title %></h5>
+          <p class="card-text story_content"><%= story.content %></p>
+        </div>
+        
+        
+        
+        
+        
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong<%= i %>">Read More</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong<%= i %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle<%= i %>" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle<%= i %>"><%= story.title %></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <%= story.content %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <% if(admin) {%>
+          <form action="/stories/<%= story._id %>?_method=DELETE" method="POST">
+            <button type="submit" class="btn btn-danger">DELETE</button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+        
+        
+        
+        
+        
+        
+      </div>
+      <% }) %>
+    </div>
+</div>
+
+<% include ../partials/footer %>
