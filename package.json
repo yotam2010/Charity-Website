@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "node": "^6.11.2",
     "bcrypt": "^3.0.1",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
