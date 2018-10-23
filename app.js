@@ -15,9 +15,9 @@ const User    = require("./modules/user"),
     
 const GMAIL_PASS = process.env.GMAIL_PASSWORD;
 const GMAIL_USER = process.env.GMAIL_USER;
+const DATABASEURL = process.env.DATABASEURL;
     
-    
-mongoose.connect('mongodb://localhost/anneni', { useNewUrlParser: true });
+mongoose.connect(`mongodb://${DATABASEURL}`, { useNewUrlParser: true });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -55,7 +55,6 @@ app.get("/",function(req,res){
     // About.create(
     //     {title:"How YOU can help",
     //     content:"We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ..."});
-
     res.render("index",{active:"home",admin:req.session.user});
 });
 
