@@ -1,22 +1,27 @@
 const   methodOverride = require('method-override'),
         session = require('express-session'),
         bodyParser = require('body-parser'),
-        nodemailer = require('nodemailer'),
         flash = require('connect-flash'),
         mongoose = require("mongoose"),
         express = require("express"),
         bcrypt = require('bcrypt'),
         app = express();
     
-const User    = require("./modules/user"),
-    Story   = require("./modules/story"),
-    Picture = require("./modules/pic"),
-    About = require("./modules/about");
+const   User    = require("./modules/user"),
+        Story   = require("./modules/story"),
+        Picture = require("./modules/pic"),
+        Contact = require("./modules/contact"),
+        About = require("./modules/about");
     
-const GMAIL_PASS = process.env.GMAIL_PASSWORD;
-const GMAIL_USER = process.env.GMAIL_USER;
+const   globalRoutes    = require("./routes/global"),
+        storiesRoutes   = require("./routes/stories"),
+        galleryRoutes = require("./routes/gallery"),
+        contactRoutes = require("./routes/contacts"),
+        aboutRoutes = require("./routes/abouts");
+
 const DATABASEURL = process.env.DATABASEURL;
-    
+
+
 mongoose.connect(`mongodb://${DATABASEURL}`, { useNewUrlParser: true });
 
 app.use(bodyParser.json());
@@ -43,92 +48,15 @@ app.use(function(req, res, next){
 });
 
 app.get("/",function(req,res){
-    // About.create(
-    //     {title:"Who are we",
-    //     content:"We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ..."});
-    // About.create(
-    //     {title:"Our Vision",
-    //     content:"We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ..."});
-    // About.create(
-    //     {title:"How we try to achieve it",
-    //     content:"We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ..."});
-    // About.create(
-    //     {title:"How YOU can help",
-    //     content:"We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ...We are dedicated to help those in needs beliving everyone deserve education, food and medial treatment. Together we can ..."});
     res.render("index",{active:"home",admin:req.session.user});
 });
 
-app.get("/stories",function(req,res){
-    Story.find({},(error,data) => {
-        res.render("stories/index",{active:"stories",admin:req.session.user,stories:data});
-    });
-});
 
-app.get("/gallery",function(req,res){
-    Picture.find({}).sort('event').exec(function(error,data){
-        
-        var events = []; var index=0;
-        if(data.length>0){
-            events[0]=[];
-        }
-        data.forEach(function(pic,i,arr){
-            if(i>0 && data[i-1].event!=pic.event){
-                index++;
-                events[index]=[];
-            }
-            events[index].push(pic);
-        })
-
-        res.render("gallery/index",{active:"gallery",admin:req.session.user,events});
-    });
-});
-
-app.get("/about-us",function(req,res){
-        About.find({},function(error,about){
-        if(!error){
-            res.render("about/index",{active:"about-us",admin:req.session.user,about});
-        }else{
-            req.flash("error_message","Failed to get to the edit page");
-            res.redirect("/about-us");
-        }
-    });
-});
 
 app.get("/donations",function(req,res){
     res.render("donations",{active:"donations",admin:req.session.user});
 })
 
-app.get("/contact-us",function(req,res){
-    res.render("contact-us",{active:"contact-us",admin:req.session.user});
-})
-
-app.post("/contact-us",function(req,res){
-    let mailOpts, smtpTrans;
-    smtpTrans = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    auth: {
-      user: GMAIL_USER,
-      pass: GMAIL_PASS
-    }
-  });
-  mailOpts = {
-    from: req.body.name + ' &lt;' + req.body.email + '&gt;',
-    to: GMAIL_USER,
-    subject: 'WEB-AUTO: New message from '+`${req.body.name} (${req.body.email})`,
-    text: `${req.body.name} (${req.body.email}) says: ${req.body.content}`
-  };
-  smtpTrans.sendMail(mailOpts, function (error, response) {
-    if (error) {
-        console.log(error);
-        req.flash("error_message","Failed to send contact form");
-        res.redirect('/contact-us');
-    }
-    else {
-        req.flash("success_message","We will be in touch soon!");
-        res.redirect('/contact-us');
-    }
-  });
-})
 
 app.get("/login",function(req,res){
     res.render("login",{active:"",admin:req.session.user});
@@ -209,88 +137,8 @@ app.get('/logout', (req, res) => {
     res.redirect("/");
 })
 
-app.get("/stories/new",function(req,res){
-    res.render("stories/new",{active:"",admin:req.session.user});
-})
 
-app.post("/stories",function(req,res){
-    let {picture,title,content} = req.body;
-    let storyData = {picture,title,content};
-    Story.create(storyData,(error,story) => {
-        if(!error){
-            req.flash("success_message","Story added")
-            res.redirect("/stories");
-        }else{req.flash("error_message","Failed to add story")
-            res.redirect("/stories/new");
-        }
-    })
-})
 
-app.delete("/stories/:id",function(req,res){
-    Story.findByIdAndDelete(req.params.id,function(error,data){
-       if(!error){
-            req.flash("success_message","Story deleted")
-            res.redirect("/stories");
-        }else{req.flash("success_message","Failed deleting the story")
-            res.redirect("/stories");
-        }
-    })
-})
-
-app.get("/gallery/new",function(req,res){
-    res.render("gallery/new",{active:"",admin:req.session.user});
-})
-
-app.post("/gallery",function(req,res){
-    let {url,event} = req.body;
-    let picData = {url,event};
-    Picture.create(picData,(error,picture) => {
-        if(!error){
-            req.flash("success_message","Picture added")
-            res.redirect("/gallery");
-        }else{req.flash("error_message","Failed to add picture")
-            res.redirect("/gallery/new");
-        }
-    })
-})
-
-app.post("/gallery/delete/:id",function(req,res){
-    Picture.findByIdAndDelete(req.params.id,function(error,data){
-       if(!error){
-            res.json({result:"sucess"});
-        }else{
-            res.json({result:"failed"});
-        }
-    })
-})
-
-app.get("/about-us/new",function(req,res){
-     res.render("about/new",{active:"",admin:req.session.user});
-});
-
-app.post("/about-us",function(req,res){
-    var {title,content} = req.body;
-    var newAbout = {title:title,content:content};
-    About.create(newAbout,function(error,about){
-        if(!error){
-            res.redirect("/about-us");
-        }else{
-            req.flash("error_message","Failed to create about");
-            res.redirect("/about-us/new");
-        }
-    });
-});
-
-app.post("/about-us/delete/:id",function(req,res){
- 
-    About.findByIdAndDelete(req.params.id,function(error,data){
-       if(!error){
-            res.json({result:"sucess"});
-        }else{
-            res.json({result:"failed"});
-        }
-    })
-})
 
 app.listen(process.env.PORT,process.env.IP,function(){
     console.log("Running!");

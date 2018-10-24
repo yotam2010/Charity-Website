@@ -42,9 +42,7 @@
         method:"POST"}).done(function() {
         
         });
-        console.log($(this).closest('.card-columns'));
-        console.log($(this).closest('.card-columns').children());
-        console.log("length: "+$(this).closest('.card-columns').children().length);
+
         if($(this).closest('.card-columns').children().length>1)
             $(this).closest('.card').remove();
         else

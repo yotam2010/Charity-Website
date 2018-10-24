@@ -1,0 +1,74 @@
+<% include ../partials/header %>
+<main>
+    <div class="banner">
+        <img src="https://images.unsplash.com/photo-1528789408128-bf8999ce0091?ixlib=rb-0.3.5&s=3b735849ebdb92ae7cd1ea07aaa837a5&auto=format&fit=crop&w=1444&q=80">
+        <div class="banner-content">
+            <h1>Need more help? Have questions? Contact us today!</h1>
+            <h2>We do love to help and answer your questions.</h2>
+        </div>
+    </div>
+    
+    <div class="contact_body container">
+    <section class="get_in_touch col-md-6 col-xs-12">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <p>Please fill the form below and we will get back to you soon.</p>
+            <form action="/contact-us/email" method="POST">
+                <div class="form-group">
+                  <label for="inputEmail">Email</label>
+                  <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email">
+                </div>
+                <div class="form-group">
+                  <label for="inputName">Name</label>
+                  <input type="text" class="form-control" id="inputName" placeholder="Name" name="name">
+                </div>
+                <div class="form-group">
+                  <label for="inputContent">Message</label>
+                  <textarea class="form-control" id="inputContent" placeholder="Message" rows="5" name="content"></textarea>
+                </div>
+              <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </form>
+        </div>
+    </section>
+    
+    <section class="connect_with_us col-md-6 col-xs-12" style="text-align:center">
+        <h2>Connect with us:</h2>
+        <p>You can contact us via email: <a href="mailto:info@anenni.com"><i class="fas fa-envelope"></i>info@anenni.com</a></p>
+        <% if(admin) {%>
+            <a href="/contact-us/new" class="btn btn-success admin_button">Add Branch</a>
+        <% } %>
+        <% if(admin) {%>
+            <button class="btn btn-danger admin_button" id="branch_delete">DELETE MODE</button>
+        <% } %>
+        
+        <% branches.forEach((branch)=> { %>
+        <address class="branch container">
+            <h4><%= branch.branch %></h4>
+            <pre class="readable_pre"><%= branch.info %>
+            Branch phone: <a href="tel:<%= branch.info %>"><%= branch.tel %></a>
+            </pre>
+            <button type="submit" class="btn btn-danger d-none form_delete_btn" data-deleteId="https://charity-yotam2013.c9users.io/contact-us/delete/<%= branch._id %>">X</button>
+        </address>        
+        <% }) %>
+
+    </section>
+    </div>
+    
+</main>
+<% include ../partials/footer %>
+
+<script>
+    var delete_button=$("#branch_delete");
+    var form_delete_btn=$(".form_delete_btn");
+    delete_button.click(function(){
+        form_delete_btn.toggleClass("d-none");
+    });
+    
+    form_delete_btn.on("click",function(){
+        $.ajax({url:$(this).attr("data-deleteId"),
+        method:"POST"}).done(function() {
+        
+        });
+        $(this).closest('.branch').remove();
+    });
+</script>

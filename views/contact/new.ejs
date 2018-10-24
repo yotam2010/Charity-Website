@@ -1,0 +1,18 @@
+<% include ../partials/header %>
+<main class="form_body">
+    <form action="/contact-us" method="POST">
+      <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+      <h1 class="h3 mb-3 font-weight-normal">New Branch</h1>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Branch" name="branch" required>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Info" name="info" required>
+        </div>
+        <div class="form-group">
+            <input type="tel" class="form-control" placeholder="Phone Number" name="tel" maxlength="12" minlength="7" pattern="^[0-9]*$">
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</main>
+<% include ../partials/footer %>
