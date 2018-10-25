@@ -6,10 +6,9 @@ var express = require("express"),
     
 const GMAIL_PASS = process.env.GMAIL_PASSWORD;
 const GMAIL_USER = process.env.GMAIL_USER;
-const DATABASEURL = process.env.DATABASEURL;
     
     
-router.get("/contact-us",function(req,res){
+router.get("/",function(req,res){
     Contact.find({},(error,branches)=>{
         if(!error){
             res.render("contact/index",{active:"contact-us",admin:req.session.user,branches});
@@ -20,7 +19,7 @@ router.get("/contact-us",function(req,res){
     })
 })
 
-router.post("/contact-us/email",function(req,res){
+router.post("/email",function(req,res){
     let mailOpts, smtpTrans;
     smtpTrans = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -49,11 +48,11 @@ router.post("/contact-us/email",function(req,res){
 })
 
 
-router.get("/contact-us/new",function(req,res){
+router.get("/new", middleware.isLoggedIn, function(req,res){
      res.render("contact/new",{active:"",admin:req.session.user});
 });
 
-router.post("/contact-us",function(req,res){
+router.post("/", middleware.isLoggedIn, function(req,res){
     var {branch,info,tel} = req.body;
     var newContact = {branch:branch, info:info, tel:tel};
     Contact.create(newContact,function(error,about){
@@ -66,7 +65,7 @@ router.post("/contact-us",function(req,res){
     });
 });
 
-router.post("/contact-us/delete/:id",function(req,res){
+router.post("/delete/:id", middleware.isLoggedIn, function(req,res){
  
     Contact.findByIdAndDelete(req.params.id,function(error,data){
        if(!error){

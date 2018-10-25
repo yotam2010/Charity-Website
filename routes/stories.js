@@ -3,17 +3,17 @@ var express = require("express"),
     Story = require("../modules/story"),
     middleware = require("../middleware");
 
-router.get("/stories",function(req,res){
+router.get("/",function(req,res){
     Story.find({},(error,data) => {
         res.render("stories/index",{active:"stories",admin:req.session.user,stories:data});
     });
 });
 
-router.get("/stories/new",middleware.isLoggedIn ,function(req,res){
+router.get("/new",middleware.isLoggedIn ,function(req,res){
     res.render("stories/new",{active:"",admin:req.session.user});
 })
 
-router.post("/stories",middleware.isLoggedIn ,function(req,res){
+router.post("/",middleware.isLoggedIn ,function(req,res){
     let {picture,title,content} = req.body;
     let storyData = {picture,title,content};
     Story.create(storyData,(error,story) => {
@@ -26,7 +26,7 @@ router.post("/stories",middleware.isLoggedIn ,function(req,res){
     })
 })
 
-router.delete("/stories/:id",middleware.isLoggedIn ,function(req,res){
+router.delete("/:id",middleware.isLoggedIn ,function(req,res){
     Story.findByIdAndDelete(req.params.id,function(error,data){
        if(!error){
             req.flash("success_message","Story deleted")

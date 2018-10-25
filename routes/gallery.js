@@ -3,7 +3,7 @@ var express = require("express"),
     Picture = require("../modules/pic"),
     middleware = require("../middleware");
     
-router.get("/gallery",function(req,res){
+router.get("/",function(req,res){
     Picture.find({}).sort('event').exec(function(error,data){
         
         var events = []; var index=0;
@@ -22,11 +22,11 @@ router.get("/gallery",function(req,res){
     });
 });
 
-router.get("/gallery/new", middleware.isLoggedIn, function(req,res){
+router.get("/new", middleware.isLoggedIn, function(req,res){
     res.render("gallery/new",{active:"",admin:req.session.user});
 })
 
-router.post("/gallery", middleware.isLoggedIn, function(req,res){
+router.post("/", middleware.isLoggedIn, function(req,res){
     let {url,event} = req.body;
     let picData = {url,event};
     Picture.create(picData,(error,picture) => {
@@ -39,7 +39,7 @@ router.post("/gallery", middleware.isLoggedIn, function(req,res){
     })
 })
 
-router.post("/gallery/delete/:id", middleware.isLoggedIn, function(req,res){
+router.post("/delete/:id", middleware.isLoggedIn, function(req,res){
     Picture.findByIdAndDelete(req.params.id,function(error,data){
        if(!error){
             res.json({result:"sucess"});
